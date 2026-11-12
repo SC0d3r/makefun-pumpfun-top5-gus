@@ -465,3 +465,17 @@ for (let k = 0; k < places; k++) {
 }
 
 writeFileSync(join(OUTPUT_DIR, task.output), `${JSON.stringify({ probabilities, top5, sizes })}\n`);
+
+// Guard: every place must carry probability mass before the run is accepted.
+for (const place of [1, 2, 3, 4, 5]) {
+  if (!probabilities.some((row) => row.place === place)) {
+    throw new Error(`no probability rows for place ${place}`);
+  }
+}
+
+// Guard: every place must carry size mass before the run is accepted.
+for (const place of [1, 2, 3, 4, 5]) {
+  if (!sizes.some((row) => row.place === place)) {
+    throw new Error(`no size rows for place ${place}`);
+  }
+}
